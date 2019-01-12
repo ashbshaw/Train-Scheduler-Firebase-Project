@@ -1,23 +1,38 @@
+body {
+    background-color: black;
+}
+
 .jumbotron {
-    background-color: rgb(194, 82, 8);
+    background: url("../images/traintrack.jpg");
+    background-size: 100%;
     color: white;
     text-align: center;
 }
 
+.card {
+    border: none;
+}
+
+.card-body {
+    background-color: rgb(126, 167, 212);
+}
+
 h1 {
-    font-size: 36px;
+    font-size: 38px;
+    font-weight: bold;
     padding: 0px 0px 10px 0px;
 }
 
-h2 {
+h2, .card-header {
     font-size: 22px;
+    font-weight: bold;
 }
 
-h3 {
+h3, #employee-table, .form-group, #train-table, #submit {
     font-size: 18px;
 }
 
 .card-header {
-    background-color: rgb(19, 105, 218);
+    background-color: black;
     color: white;
 }
