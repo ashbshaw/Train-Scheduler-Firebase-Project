@@ -6,7 +6,7 @@ var config = {
     projectId: "ashleys-train-scheduler",
     storageBucket: "ashleys-train-scheduler.appspot.com",
     messagingSenderId: "579029626638"
-  };
+};
 
 firebase.initializeApp(config);
 
@@ -22,7 +22,7 @@ $("#submit").on("click", function (event) {
     // Grab the "values" from the form fields and store them in variables
     var trainName = $("#train-input").val().trim();
     var destination = $("#destination-input").val().trim();
-    var firstTrain = parseInt($("#first-input").val().trim());
+    var firstTrain = moment($("#first-input").val().trim(), "HH:mm").format("X");
     var minutes = parseInt($("#minutes-input").val().trim());
 
     // Create a variable to consolidate the input data
@@ -32,13 +32,11 @@ $("#submit").on("click", function (event) {
         firstTrain: firstTrain,
         minutes: minutes,
     }
-    
-    // Push the input data into the Firebase database (reminder: must be inside click handler)
+
+    // Uploads employee data to the database
     database.ref().push(newTrain);
 
-    // Check information in console
     console.log(newTrain.trainName);
-    console.log(newTrain.destination);
     console.log(newTrain.destination);
     console.log(newTrain.firstTrain);
     console.log(newTrain.minutes);
@@ -59,22 +57,38 @@ database.ref().on("child_added", function (childSnapshot) {
     var destination = childSnapshot.val().destination;
     var firstTrain = childSnapshot.val().firstTrain;
     var minutes = childSnapshot.val().minutes;
+    var minTo = childSnapshot.val().minTo;
 
-    // Calculate the time until the newly input train arrives
-    //var timeCalc = moment().diff(moment(firstTrain, "X"), "minutes");
-    //console.log(minutes);
+    // Convert first train time input into the proper format
+    var firstTrainConverted = moment(firstTrain, "HH:mm");
+
+    // Difference between the times
+    var difference = moment().diff(moment(firstTrainConverted), "minutes");
+    console.log("time difference: " + difference);
+
+    // Time apart (remainder)
+    var remainder = difference % minutes;
+
+    // Minutes until next arrival
+    var minTo = minutes - remainder;
+
+    // Next arrival time
+    var nextArrival = moment().add(minTo, "minutes").format("HH:mm");
+
+    // THANKS, GOOGLE. I LOVE YOU.
 
     // Create the new row and append new data into the train schedule
     var newRow = $("<tr>").append(
         $("<td>").text(trainName),
         $("<td>").text(destination),
-        $("<td>").text(firstTrain),
         $("<td>").text(minutes),
+        $("<td>").text(nextArrival),
+        $("<td>").text(minTo),
+
     );
 
+    console.log(newRow);
     // Append the new row to the table
     $("#train-table > tbody").append(newRow);
 
 })
-
-
