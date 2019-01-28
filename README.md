@@ -7,4 +7,4 @@ The finished product is located here: https://ashbshaw.github.io/train-scheduler
 
 The Firebase database is located here: https://ashleys-train-scheduler.firebaseio.com/
 
-For more information, please contact Ashley Shaw @ ashley.brooke.shaw@gmail.com.
+For more information, please contact Ashley Shaw @ ashley.brooke.shaw@gmail.com
